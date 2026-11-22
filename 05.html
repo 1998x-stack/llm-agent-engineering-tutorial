@@ -4,12 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第5章 工具调用与Function Calling - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+svg [hidden]{display:none}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +223,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第5章 工具调用与 Function Calling</h2>
+<h1>第5章 工具调用与 Function Calling</h1>
 
 <p>大家好，我是你们的讲师。在前几章中，我们说 Agent 的核心是"感知-思考-行动"循环，而"行动"的关键就是<strong>工具调用</strong>（Tool Calling / Function Calling）。没有工具调用，Agent 就是一个只会说的"嘴炮"；有了工具调用，Agent 才成为能动手的"实干家"。</p>
 
@@ -58,7 +240,7 @@
 
 <h3>工具调用的发展历程</h3>
 
-<p>工具调用并不是一开始就有的。回顾一下它的演进过程：</p>
+<p>工具调用并不是一开始就有的。它的一条理论主线来自 2023 年的 Toolformer（Schick et al., <a href="https://arxiv.org/abs/2302.04761">arXiv:2302.04761</a>），那篇工作让模型自己学会何时调用 API。回顾一下它的演进过程：</p>
 
 <ul>
     <li><strong>2022 年末：</strong> 人们发现 GPT-3.5 可以通过 Prompt 提示来"假装调用函数"——模型输出类似 <code>get_weather("北京")</code> 的文本，然后通过正则表达式解析。这个方案极其脆弱，模型经常格式出错。</li>
@@ -83,6 +265,39 @@
 <div class="tip">
     <strong>关键认知：</strong> 模型不是"主动去执行"函数——模型只是"提出请求"。你的代码才是真正的执行者。这也意味着你可以对模型的工具调用请求做任何处理：你可以修改参数、拒绝执行、加入审批流程，或者并行执行多个请求。
 </div>
+
+<figure id="fig5-toolcall">
+  <svg id="fig5-svg" viewBox="0 0 720 330" role="img" aria-labelledby="fig5-title fig5-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig5-title">Function Calling 的一轮往返与运行时拦截层</title>
+    <desc id="fig5-desc">用户消息进入 LLM，LLM 输出 tool_call(JSON)；运行时解析并执行工具，将 tool_result 回填给 LLM。运行时可在执行前加入 schema 校验、审批与幂等去重。</desc>
+    <defs><marker id="fig5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="40" y="30" width="150" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/>
+    <text x="115" y="60" text-anchor="middle" font-size="15" fill="#0c4a6e">用户消息</text>
+    <line x1="190" y1="55" x2="276" y2="55" stroke="#64748b" stroke-width="2" marker-end="url(#fig5-arrow)"/>
+    <rect x="280" y="30" width="200" height="50" rx="10" fill="#ede9fe" stroke="#8b5cf6"/>
+    <text x="380" y="60" text-anchor="middle" font-size="15" fill="#4c1d95">LLM（只提出请求）</text>
+    <line x1="380" y1="80" x2="380" y2="146" stroke="#8b5cf6" stroke-width="2" marker-end="url(#fig5-arrow)"/>
+    <text x="392" y="118" font-size="13" fill="#4c1d95">tool_call (JSON)</text>
+    <rect x="280" y="150" width="200" height="50" rx="10" fill="#fef3c7" stroke="#d97706"/>
+    <text x="380" y="180" text-anchor="middle" font-size="15" fill="#78350f">你的代码 / 运行时</text>
+    <line x1="480" y1="175" x2="556" y2="175" stroke="#64748b" stroke-width="2" marker-end="url(#fig5-arrow)"/>
+    <rect x="560" y="150" width="140" height="50" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="630" y="180" text-anchor="middle" font-size="15" fill="#14532d">工具 / 函数</text>
+    <path d="M630 150 V16 H380 V26" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#fig5-arrow)"/>
+    <text x="500" y="10" font-size="13" fill="#14532d">tool_result 回填</text>
+    <g id="fig5-gate" hidden>
+      <rect x="200" y="250" width="500" height="60" rx="12" fill="#f1f5f9" stroke="#7461ba" stroke-dasharray="6 4"/>
+      <text x="450" y="276" text-anchor="middle" font-size="14" fill="#3b2f66">运行时拦截层：schema 校验 · 权限审批 · 幂等去重 · 并行调度</text>
+      <text x="450" y="298" text-anchor="middle" font-size="13" fill="#64748b">模型无权绕过这一层；拒绝执行时返回结构化错误</text>
+      <line x1="380" y1="200" x2="380" y2="246" stroke="#7461ba" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#fig5-arrow)"/>
+    </g>
+  </svg>
+  <figcaption><strong>图 5-1</strong>　Function Calling 的一轮往返。关键点：LLM 的输出只是<em>结构化请求</em>，真正的执行发生在运行时；把校验/审批放到运行时，就能在不改动模型的情况下约束 Agent 行为。切换下方按钮查看拦截层。<a href="#fig5-toolcall">图 5-1</a> 为本文教学示意，机制描述参见 5.2 节的各家 API 规范。</figcaption>
+  <div class="controls" role="group" aria-label="切换是否启用拦截层">
+    <button type="button" data-gate="0" aria-pressed="true">直连执行</button>
+    <button type="button" data-gate="1" aria-pressed="false">加入运行时拦截层</button>
+  </div>
+</figure>
 
 <h2>5.2 Tool 定义规范：OpenAI vs Anthropic 格式对比</h2>
 
@@ -475,7 +690,19 @@ results = await asyncio.gather(
             <a href="index.html">📖 返回目录</a>
             <a href="06.html">下一章 →</a>
         </div>
-    </div>
+    </article></main>
+<script>
+(function () {
+  var gate = document.getElementById('fig5-gate');
+  var btns = document.querySelectorAll('.controls button[data-gate]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      gate.hidden = btn.getAttribute('data-gate') === '0';
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
