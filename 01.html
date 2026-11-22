@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第1章 Agent技术概述 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html" class="active">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第1章 Agent 技术概述</h2>
+<h1>第1章 Agent 技术概述</h1>
 
 <p>大家好，我是你们的讲师。今天我们来聊聊一个在 2025、2026 年彻底改变了 AI 工程格局的概念 —— <strong>LLM Agent</strong>。如果你在过去两年里关注过 AI 领域，一定听过这样的说法："2023 年是 LLM 元年，2024 年是 RAG 元年，2025-2026 年是 Agent 元年。"这个判断并非夸张——从 OpenAI 发布 GPT-4 开始，大家就意识到大语言模型的能力边界不止于聊天；而真正让 LLM 从"对话工具"进化为"数字员工"的关键，就是 Agent 架构。</p>
 
@@ -64,7 +245,61 @@
     <li><strong>行动（Action）：</strong> 调用外部工具执行具体操作——发出 HTTP 请求、执行 SQL 查询、写入文件、发送邮件、操作浏览器等。</li>
 </ul>
 
-<p>这个"感知-推理-行动"循环，通常简称为 <strong>ReAct 模式</strong>（Reasoning + Acting），是几乎所有现代 Agent 框架的理论基础。我们会在第 2 章深入剖析这个循环的每一个环节。</p>
+<p>这个"感知-推理-行动"循环，通常简称为 <strong>ReAct 模式</strong>（Reasoning + Acting），是几乎所有现代 Agent 框架的理论基础（ReAct: Yao et al., 2022, <a href="https://arxiv.org/abs/2210.03629">arXiv:2210.03629</a>）。我们会在第 2 章深入剖析这个循环的每一个环节。</p>
+
+<figure id="fig-agent-loop">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig1-title fig1-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig1-title">从单次生成到闭环 Agent 的三个阶段</title>
+    <desc id="fig1-desc">阶段一：LLM 单次生成；阶段二：LLM 调用外部工具并把结果回填；阶段三：感知-推理-行动-观察构成闭环，并由记忆维持上下文。</desc>
+    <defs><marker id="fig1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g class="stage" id="fig1-s1">
+      <rect x="40" y="120" width="150" height="54" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="115" y="152" text-anchor="middle" font-size="15" fill="#0c4a6e">用户目标</text>
+      <line x1="190" y1="147" x2="276" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="280" y="120" width="160" height="54" rx="10" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="360" y="152" text-anchor="middle" font-size="15" fill="#4c1d95">LLM 单次生成</text>
+      <line x1="440" y1="147" x2="526" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="530" y="120" width="150" height="54" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="605" y="152" text-anchor="middle" font-size="15" fill="#14532d">文本回答</text>
+    </g>
+    <g class="stage" id="fig1-s2" hidden>
+      <rect x="40" y="120" width="150" height="54" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="115" y="152" text-anchor="middle" font-size="15" fill="#0c4a6e">用户目标</text>
+      <line x1="190" y1="147" x2="276" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="280" y="120" width="160" height="54" rx="10" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="360" y="152" text-anchor="middle" font-size="15" fill="#4c1d95">LLM 规划</text>
+      <line x1="360" y1="174" x2="360" y2="210" stroke="#8b5cf6" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <line x1="360" y1="215" x2="360" y2="182" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#fig1-arrow)"/>
+      <rect x="280" y="220" width="160" height="52" rx="10" fill="#fef3c7" stroke="#d97706"/>
+      <text x="360" y="251" text-anchor="middle" font-size="14" fill="#78350f">工具：API / 数据库</text>
+      <line x1="440" y1="147" x2="526" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="530" y="120" width="150" height="54" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="605" y="152" text-anchor="middle" font-size="15" fill="#14532d">最终答案</text>
+    </g>
+    <g class="stage" id="fig1-s3" hidden>
+      <rect x="40" y="120" width="130" height="54" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="105" y="152" text-anchor="middle" font-size="15" fill="#0c4a6e">感知</text>
+      <line x1="170" y1="147" x2="248" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="250" y="120" width="130" height="54" rx="10" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="315" y="152" text-anchor="middle" font-size="15" fill="#4c1d95">推理</text>
+      <line x1="380" y1="147" x2="458" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="460" y="120" width="130" height="54" rx="10" fill="#fef3c7" stroke="#d97706"/>
+      <text x="525" y="152" text-anchor="middle" font-size="15" fill="#78350f">行动</text>
+      <path d="M525 174 L525 240 L382 240" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="250" y="214" width="130" height="52" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="315" y="245" text-anchor="middle" font-size="15" fill="#14532d">观察</text>
+      <line x1="315" y1="214" x2="315" y2="182" stroke="#16a34a" stroke-width="2" marker-end="url(#fig1-arrow)"/>
+      <rect x="470" y="214" width="200" height="52" rx="10" fill="#f1f5f9" stroke="#7461ba" stroke-dasharray="6 4"/>
+      <text x="570" y="245" text-anchor="middle" font-size="14" fill="#3b2f66">记忆 / 上下文（长期存储）</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 1-1</strong>　Agent 能力的三级跃迁。阶段一只有单次生成，无法访问外部状态；阶段二引入工具调用，但仍是一次性问答；阶段三把"行动"的结果作为下一轮"感知"输入，形成 <em>感知 → 推理 → 行动 → 观察</em> 的闭环，记忆负责跨轮次保存状态。<a href="#fig-agent-loop">用下方按钮切换阶段</a>；该图为本文教学示意，非论文原图。</figcaption>
+  <div class="controls" role="group" aria-label="切换图示阶段">
+    <button type="button" data-stage="fig1-s1" aria-pressed="true">阶段一 · 单次生成</button>
+    <button type="button" data-stage="fig1-s2" aria-pressed="false">阶段二 · 加入工具</button>
+    <button type="button" data-stage="fig1-s3" aria-pressed="false">阶段三 · 闭环 Agent</button>
+  </div>
+</figure>
 
 <div class="tip">
     <strong>小贴士：</strong> 区分"AI Agent"和"AI 应用"的关键标志是：Agent 具备自主决策能力，能够在没有人类逐一指令的情况下，根据目标自行规划执行步骤。如果每一步都由人类写出精确指令，那只是传统自动化，不是 Agent。
@@ -323,7 +558,23 @@ def agent_loop(user_query):
     <a href="02.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
