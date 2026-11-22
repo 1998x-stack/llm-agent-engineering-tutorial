@@ -4,12 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第6章 记忆系统设计 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+svg [hidden]{display:none}
+#fig6-svg .layer{opacity:.32;transition:opacity .2s}
+#fig6-svg[data-focus="percept"] .l-percept,#fig6-svg[data-focus="short"] .l-short,#fig6-svg[data-focus="long"] .l-long{opacity:1}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +225,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第6章 记忆系统设计</h2>
+<h1>第6章 记忆系统设计</h1>
 
 <p>大家好，我是你们的讲师。这一章我们要讨论一个非常"人味儿"的话题——<strong>记忆</strong>。</p>
 
@@ -94,6 +278,37 @@
         </tr>
     </tbody>
 </table>
+
+<figure id="fig6-layers">
+  <svg id="fig6-svg" data-focus="short" viewBox="0 0 720 310" role="img" aria-labelledby="fig6-title fig6-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig6-title">Agent 的三层记忆：感知 / 短期 / 长期</title>
+    <desc id="fig6-desc">三层记忆自上而下为感知记忆、短期记忆（上下文窗口）与长期记忆；信息向下压缩写入，长期记忆向上检索回灌到工作上下文。</desc>
+    <defs><marker id="fig6-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g class="layer l-percept"><rect x="40" y="30" width="560" height="58" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="58" y="56" font-size="16" fill="#0c4a6e">感知记忆</text>
+      <text x="58" y="78" font-size="13" fill="#0c4a6e">当前用户输入 + 系统状态</text>
+      <text x="586" y="56" text-anchor="end" font-size="12" fill="#0369a1">毫秒级 · 不持久</text></g>
+    <g class="layer l-short"><rect x="40" y="120" width="560" height="58" rx="12" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="58" y="146" font-size="16" fill="#4c1d95">短期记忆（上下文窗口）</text>
+      <text x="58" y="168" font-size="13" fill="#4c1d95">对话消息列表 messages</text>
+      <text x="586" y="146" text-anchor="end" font-size="12" fill="#6d28d9">会话内 · 容量受限</text></g>
+    <g class="layer l-long"><rect x="40" y="210" width="560" height="58" rx="12" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="58" y="236" font-size="16" fill="#14532d">长期记忆</text>
+      <text x="58" y="258" font-size="13" fill="#14532d">向量库 / 知识图谱 / 文件系统</text>
+      <text x="586" y="236" text-anchor="end" font-size="12" fill="#15803d">跨会话 · 按需检索</text></g>
+    <line x1="640" y1="90" x2="640" y2="116" stroke="#64748b" stroke-width="2" marker-end="url(#fig6-arrow)"/>
+    <line x1="640" y1="180" x2="640" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#fig6-arrow)"/>
+    <text x="652" y="145" font-size="12" fill="#64748b">写入 / 压缩</text>
+    <line x1="672" y1="240" x2="672" y2="60" stroke="#16a34a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#fig6-arrow)"/>
+    <text x="684" y="150" font-size="12" fill="#15803d" transform="rotate(90 684 150)">检索</text>
+  </svg>
+  <figcaption><strong>图 6-1</strong>　三层记忆与双向数据流：信息自上而下压缩写入（原始输入 → 上下文 → 持久存储），长期记忆再自上而下按需检索回灌到上下文窗口。切换按钮聚焦某一层：<a href="#fig6-layers">图 6-1</a>。分类框架借鉴 Atkinson–Shiffrin 记忆模型；容量与持久性描述为本文教学示意。</figcaption>
+  <div class="controls" role="group" aria-label="聚焦某层记忆">
+    <button type="button" data-focus="percept" aria-pressed="false">感知记忆</button>
+    <button type="button" data-focus="short" aria-pressed="true">短期记忆</button>
+    <button type="button" data-focus="long" aria-pressed="false">长期记忆</button>
+  </div>
+</figure>
 
 <h3>感知记忆</h3>
 
@@ -408,7 +623,7 @@ def search_memory(user_id: str, query: str, top_k: int = 5):
 
 <h2>6.6 Mem0 等记忆层框架</h2>
 
-<p>虽然在 2024-2025 年出现了 Mem0、memgpt 等专门做 Agent 记忆的框架，但到 2026 年，<strong>记忆功能已经逐步内化到了主流 Agent 框架中</strong>。LangChain、CrewAI 和 AutoGen 都内置了成熟的记忆系统。</p>
+<p>虽然在 2024-2025 年出现了 Mem0、memgpt 等专门做 Agent 记忆的框架（MemGPT 的论文原文：Packer et al., <a href="https://arxiv.org/abs/2310.08560">arXiv:2310.08560</a>），但到 2026 年，<strong>记忆功能已经逐步内化到了主流 Agent 框架中</strong>。LangChain、CrewAI 和 AutoGen 都内置了成熟的记忆系统。</p>
 
 <p>不过 Mem0 依然是值得关注的选择，因为它专注于记忆这一件事：</p>
 
@@ -472,7 +687,19 @@ results = memory.search(
             <a href="index.html">📖 返回目录</a>
             <a href="07.html">下一章 →</a>
         </div>
-    </div>
+    </article></main>
+<script>
+(function () {
+  var svg = document.getElementById('fig6-svg');
+  var btns = document.querySelectorAll('.controls button[data-focus]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      svg.setAttribute('data-focus', btn.getAttribute('data-focus'));
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
