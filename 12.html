@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第12章 RAG Agent实战 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第12章 RAG Agent 实战</h2>
+<h1>第12章 RAG Agent 实战</h1>
 
 <p>任何一个知识密集型的 Agent 应用，都绕不开一个核心问题：<strong>Agent 的知识从哪来？</strong>模型本身的训练数据有截止日期，而且不可能覆盖所有的企业内部知识。RAG（Retrieval-Augmented Generation）就是来填补这个空白的——它让 Agent 能从外部知识库中检索相关信息，再基于检索结果生成回答。</p>
 
@@ -56,7 +237,7 @@
 
 <h2>12.1 RAG 演进：Naive → Advanced → Agentic RAG</h2>
 
-<p>在动手之前，我们先快速回顾 RAG 的三个阶段，理解为什么我们需要 Agentic RAG。</p>
+<p>在动手之前，我们先快速回顾 RAG 的三个阶段，理解为什么我们需要 Agentic RAG。RAG 最初由 Lewis 等人提出（<a href="https://arxiv.org/abs/2005.11401">arXiv:2005.11401</a>），用于让模型在生成前先检索外部知识。</p>
 
 <table>
     <thead>
@@ -90,6 +271,61 @@
 </table>
 
 <p>Agentic RAG 的核心突破在于：Agent 不再是一个"检索→生成"的被动管道，而是主动管理检索过程。当检索结果不充分时，Agent 可以决定改写查询词、切换搜索源、或者向用户索要更多信息。这听起来像是"把 RAG 包装成一个 Agent 工具"——没错，但实际上远不止如此。</p>
+
+<figure id="fig12-rag">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig12-title fig12-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig12-title">RAG 三个阶段：Naive、Advanced、Agentic</title>
+    <desc id="fig12-desc">Naive RAG 是一条固定管道；Advanced RAG 在固定管道上加入查询改写、混合检索与重排；Agentic RAG 由 Agent 自主决定是否检索、如何改写、是否多源检索与澄清，并在自评不充分时回到决策。</desc>
+    <defs><marker id="fig12-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g class="stage" id="fig12-naive">
+      <text x="360" y="90" text-anchor="middle" font-size="13" fill="#64748b">固定管道：一次检索，一次生成</text>
+      <rect x="20" y="125" width="150" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="95" y="155" text-anchor="middle" font-size="14" fill="#0c4a6e">查询</text>
+      <rect x="195" y="125" width="150" height="50" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="270" y="155" text-anchor="middle" font-size="14" fill="#4c1d95">向量检索 Top-K</text>
+      <rect x="370" y="125" width="150" height="50" rx="10" fill="#fef3c7" stroke="#d97706"/><text x="445" y="155" text-anchor="middle" font-size="14" fill="#78350f">拼接 Prompt</text>
+      <rect x="545" y="125" width="150" height="50" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="620" y="155" text-anchor="middle" font-size="14" fill="#14532d">LLM 生成</text>
+      <line x1="170" y1="150" x2="191" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="345" y1="150" x2="366" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="520" y1="150" x2="541" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <text x="360" y="215" text-anchor="middle" font-size="13" fill="#b91c1c">局限：检索失败则全盘皆输，无法多步推理</text>
+    </g>
+    <g class="stage" id="fig12-advanced" hidden>
+      <text x="360" y="90" text-anchor="middle" font-size="13" fill="#64748b">固定管道 + 检索质量优化（仍无自适应）</text>
+      <rect x="15" y="125" width="125" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="77" y="155" text-anchor="middle" font-size="13" fill="#0c4a6e">查询</text>
+      <rect x="155" y="125" width="125" height="50" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="217" y="155" text-anchor="middle" font-size="13" fill="#4c1d95">Query Rewrite</text>
+      <rect x="295" y="125" width="125" height="50" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="357" y="155" text-anchor="middle" font-size="13" fill="#4c1d95">Hybrid 检索</text>
+      <rect x="435" y="125" width="125" height="50" rx="10" fill="#fef3c7" stroke="#d97706"/><text x="497" y="155" text-anchor="middle" font-size="13" fill="#78350f">Rerank</text>
+      <rect x="575" y="125" width="125" height="50" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="637" y="155" text-anchor="middle" font-size="13" fill="#14532d">LLM 生成</text>
+      <line x1="140" y1="150" x2="151" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="280" y1="150" x2="291" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="420" y1="150" x2="431" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="560" y1="150" x2="571" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <text x="360" y="215" text-anchor="middle" font-size="13" fill="#b45309">局限：质量提升，但流程仍然固定</text>
+    </g>
+    <g class="stage" id="fig12-agentic" hidden>
+      <rect x="15" y="125" width="110" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="70" y="155" text-anchor="middle" font-size="13" fill="#0c4a6e">查询</text>
+      <rect x="160" y="125" width="150" height="50" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="235" y="155" text-anchor="middle" font-size="13" fill="#4c1d95">Agent 决策</text>
+      <rect x="345" y="125" width="160" height="50" rx="10" fill="#fef3c7" stroke="#d97706"/><text x="425" y="155" text-anchor="middle" font-size="13" fill="#78350f">检索工具（多源）</text>
+      <rect x="545" y="125" width="160" height="50" rx="10" fill="#f1f5f9" stroke="#64748b"/><text x="625" y="155" text-anchor="middle" font-size="13" fill="#334155">自评：信息充分？</text>
+      <rect x="355" y="225" width="160" height="50" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="435" y="255" text-anchor="middle" font-size="13" fill="#14532d">生成回答</text>
+      <line x1="125" y1="150" x2="156" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="310" y1="150" x2="341" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <line x1="505" y1="150" x2="541" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <path d="M625 175 V250 H519" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#fig12-arrow)"/>
+      <text x="560" y="222" font-size="12" fill="#15803d">充分 → 生成</text>
+      <path d="M625 125 V70 H235 V121" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#fig12-arrow)"/>
+      <text x="430" y="60" text-anchor="middle" font-size="12" fill="#6d28d9">不充分：改写 / 换源 / 澄清，再次检索</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 12-1</strong>　RAG 的三级演进。前两阶都是"固定管道"，区别只在管道内部的质量优化；Agentic RAG 把"检索控制流"交给 Agent，用一次<a href="#fig12-rag">自评</a>形成一个可回退的循环。<a href="#fig12-rag">用下方按钮切换阶段</a>。图为本文教学示意，阶段划分参见 12.1 节表格。</figcaption>
+  <div class="controls" role="group" aria-label="切换 RAG 阶段">
+    <button type="button" data-stage="fig12-naive" aria-pressed="true">阶段一 · Naive</button>
+    <button type="button" data-stage="fig12-advanced" aria-pressed="false">阶段二 · Advanced</button>
+    <button type="button" data-stage="fig12-agentic" aria-pressed="false">阶段三 · Agentic</button>
+  </div>
+</figure>
+  </svg>
+</figure>
+
 
 <div class="tip">
     <strong>理解 Agentic RAG：</strong> 如果用做饭来类比——Naive RAG 是"冰箱里有什么就做什么"，Advanced RAG 是"先想好菜谱再去买菜"，而 Agentic RAG 是"大厨亲自去菜市场，看到不新鲜的菜就换一种，发现缺了调料就绕道去买"。灵活性完全不同。
@@ -534,7 +770,23 @@ print(result["answer"])</code></pre>
     <a href="13.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var t = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === t;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
