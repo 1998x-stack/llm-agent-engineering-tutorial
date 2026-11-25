@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第21章 CrewAI角色化开发 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+    </style>
+    <style>
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px;min-width:0}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+    </style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第21章 CrewAI 角色化开发</h2>
+<h1>第21章 CrewAI 角色化开发</h1>
 
 <p>想象一下这样的场景：你是科技公司的 CEO，需要完成一份市场分析报告。你手下有三位员工——一位是行业研究员（擅长搜索和整理资料），一位是数据分析师（擅长处理数字和图表），还有一位是资深编辑（擅长撰写和润色文字）。你把任务分派给他们，他们各司其职、协同工作，最后交给你一份高质量的成品。</p>
 
@@ -58,7 +239,7 @@
 
 <p>CrewAI 的创始人在一次访谈中提到过一个有趣的观点："大多数 Agent 框架都在解决技术问题——如何调用工具、如何管理状态、如何处理错误。但我们想解决的是更上层的问题——如何让领域专家（而不是 AI 工程师）也能定义 Agent 系统。"</p>
 
-<p>这种理念催生了 CrewAI 独特的<strong>声明式角色定义（Declarative Role Definition）</strong>范式。在 CrewAI 中，你不需要写复杂的图结构或回调函数，只需要用自然语言描述"你要一个什么样的 Agent"：</p>
+<p>这种理念催生了 CrewAI 独特的<strong>声明式角色定义（Declarative Role Definition）</strong>范式。用角色扮演与角色分工驱动多 Agent 协作的思路，可以追溯到 CAMEL（Li et al., 2023, <a href="https://arxiv.org/abs/2303.17760">arXiv:2303.17760</a>）——为每个 Agent 设定角色与目标，让它们在扮演中自主协作。在 CrewAI 中，你不需要写复杂的图结构或回调函数，只需要用自然语言描述"你要一个什么样的 Agent"：</p>
 
 <pre><code>from crewai import Agent, Task, Crew
 
@@ -85,6 +266,47 @@ researcher = Agent(
 <h2>21.2 Agent / Task / Crew 三要素</h2>
 
 <p>CrewAI 的编程模型围绕三个核心概念展开，理解它们就掌握了框架的 80%。</p>
+
+<figure id="fig-crewai">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig21-title fig21-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig21-title">CrewAI 三要素与两种 Process</title>
+    <desc id="fig21-desc">状态一：Crew 容器内包含若干 Agent（角色/目标/背景）和 Task（描述/期望输出），每个 Task 通过 agent= 绑定到一个 Agent。状态二：顺序 Process 让任务依次执行；层级 Process 由一个经理 Agent 自动分派并汇总。</desc>
+    <defs><marker id="fig21-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g class="stage" id="fig21-s1">
+      <rect x="30" y="30" width="660" height="244" rx="14" fill="#faf8ff" stroke="#8b5cf6" stroke-dasharray="6 4"/>
+      <text x="55" y="56" font-size="14" fill="#4c1d95">Crew（团队容器 + Process）</text>
+      <rect x="70" y="76" width="170" height="56" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="155" y="110" text-anchor="middle" font-size="13" fill="#4c1d95">Agent：研究员</text>
+      <rect x="275" y="76" width="170" height="56" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="360" y="110" text-anchor="middle" font-size="13" fill="#4c1d95">Agent：分析师</text>
+      <rect x="480" y="76" width="170" height="56" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="565" y="110" text-anchor="middle" font-size="13" fill="#4c1d95">Agent：写作</text>
+      <rect x="70" y="196" width="170" height="56" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="155" y="230" text-anchor="middle" font-size="13" fill="#0c4a6e">Task：调研</text>
+      <rect x="275" y="196" width="170" height="56" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="360" y="230" text-anchor="middle" font-size="13" fill="#0c4a6e">Task：分析</text>
+      <rect x="480" y="196" width="170" height="56" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="565" y="230" text-anchor="middle" font-size="13" fill="#0c4a6e">Task：成稿</text>
+      <line x1="155" y1="196" x2="155" y2="134" stroke="#16a34a" stroke-width="2" marker-end="url(#fig21-arrow)"/><text x="165" y="172" font-size="11" fill="#14532d">agent=</text>
+      <line x1="360" y1="196" x2="360" y2="134" stroke="#16a34a" stroke-width="2" marker-end="url(#fig21-arrow)"/><text x="370" y="172" font-size="11" fill="#14532d">agent=</text>
+      <line x1="565" y1="196" x2="565" y2="134" stroke="#16a34a" stroke-width="2" marker-end="url(#fig21-arrow)"/><text x="575" y="172" font-size="11" fill="#14532d">agent=</text>
+    </g>
+    <g class="stage" id="fig21-s2" hidden>
+      <text x="180" y="34" text-anchor="middle" font-size="14" fill="#0c4a6e">顺序 Process</text>
+      <text x="540" y="34" text-anchor="middle" font-size="14" fill="#78350f">层级 Process</text>
+      <rect x="70" y="56" width="220" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="180" y="87" text-anchor="middle" font-size="13" fill="#0c4a6e">任务 1</text>
+      <rect x="70" y="128" width="220" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="180" y="159" text-anchor="middle" font-size="13" fill="#0c4a6e">任务 2</text>
+      <rect x="70" y="200" width="220" height="50" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="180" y="231" text-anchor="middle" font-size="13" fill="#14532d">任务 3（串行依次）</text>
+      <line x1="180" y1="106" x2="180" y2="126" stroke="#64748b" stroke-width="2" marker-end="url(#fig21-arrow)"/>
+      <line x1="180" y1="178" x2="180" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig21-arrow)"/>
+      <rect x="450" y="56" width="180" height="52" rx="10" fill="#fef3c7" stroke="#d97706"/><text x="540" y="88" text-anchor="middle" font-size="13" fill="#78350f">经理 Agent</text>
+      <rect x="400" y="200" width="130" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="465" y="231" text-anchor="middle" font-size="12" fill="#0c4a6e">成员 1</text>
+      <rect x="550" y="200" width="130" height="50" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="615" y="231" text-anchor="middle" font-size="12" fill="#0c4a6e">成员 2</text>
+      <line x1="500" y1="108" x2="465" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig21-arrow)"/>
+      <line x1="580" y1="108" x2="615" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig21-arrow)"/>
+      <text x="540" y="150" text-anchor="middle" font-size="11" fill="#78350f">自动分派 + 汇总</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 21-1</strong>　CrewAI 的两层抽象。左（三要素）：Agent 是“人”（role/goal/backstory），Task 是“活”（description/expected_output），Task 用 <code>agent=</code> 绑定到人，Crew 把两者装进同一容器并指定 Process。右（Process）：顺序模式让任务串行传递，层级模式由经理 Agent 自动分派与汇总。点击下方按钮切换；该图为本文教学示意，对应代码见 21.2 / 21.3 节。</figcaption>
+  <div class="controls" role="group" aria-label="切换三要素与 Process">
+    <button type="button" data-stage="fig21-s1" aria-pressed="true">状态一 · Agent/Task/Crew</button>
+    <button type="button" data-stage="fig21-s2" aria-pressed="false">状态二 · 顺序 vs 层级</button>
+  </div>
+</figure>
 
 <h3>Agent：团队中的"人"</h3>
 <p>每个 Agent 代表一个团队成员。除了前面提到的 <code>role</code>、<code>goal</code>、<code>backstory</code>，Agent 还可以配置：</p>
@@ -435,8 +657,24 @@ print(final_output)
     <a href="22.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
 </div>
 </div>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
