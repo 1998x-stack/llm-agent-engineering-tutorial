@@ -4,12 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第4章 Prompt工程与指令设计 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+    </style>
+    <style>
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.layer-detail p{margin:.3rem 0}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+    </style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,14 +223,14 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第4章 Prompt 工程与指令设计</h2>
+<h1>第4章 Prompt 工程与指令设计</h1>
 
 <p>大家好，我是你们的讲师。如果你问我：Agent 开发中最重要的单项技能是什么？我的答案毫不犹豫——<strong>Prompt Engineering</strong>。你搭好了开发环境、理解了 ReAct 循环，但如果没有写好 Prompt，你的 Agent 就是一个"脑子很好但听不懂人话"的员工。</p>
 
-<p>有人说"Prompt Engineering 只是写写提示词，没什么技术含量"。说这话的人八成没写过真正好用的 Agent System Prompt。差劲的 Prompt 和优秀的 Prompt 之间，Agent 的表现差距可以大到天壤之别——同样的模型、同样的代码，换一个 System Prompt，任务成功率能从 20% 飙升到 90%。</p>
+<p>有人说"Prompt Engineering 只是写写提示词，没什么技术含量"。说这话的人八成没写过真正好用的 Agent System Prompt。差劲的 Prompt 和优秀的 Prompt 之间，Agent 的表现差距可以大到天壤之别——同样的模型、同样的代码，换一个 System Prompt，任务成功率能从 20% 飙升到 90%（此为教学夸张示例，非实测数据，真实差异取决于任务与模型）。</p>
 
 <div class="highlight">
     <strong>核心洞察：</strong> System Prompt 不是"给模型的指令"，而是"Agent 的人格、知识边界、行为准则和任务规范的统一体"。写好 System Prompt 的逻辑，和写好一份员工手册、一份 API 文档有很多共通之处——你需要明确职责、界定边界、设定规范、预判异常。
@@ -59,6 +241,40 @@
 <h3>五层 Prompt 架构</h3>
 
 <p>经过大量的实践和迭代，我总结出一个可复用的 <strong>五层 System Prompt 架构</strong>：</p>
+
+<figure id="fig-prompt-layers">
+  <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig4-title fig4-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig4-title">五层 System Prompt 架构</title>
+    <desc id="fig4-desc">自上而下五层：角色定义、行为规范、输出格式、工具指南、边界条件。点击下方按钮可高亮某一层并查看对应示例文本。</desc>
+    <g id="fig4-stack">
+      <rect data-layer="1" x="70" y="20" width="580" height="46" rx="10" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="92" y="49" font-size="15" fill="#4c1d95">1 · 角色定义　— 你是谁，职责边界在哪</text>
+      <rect data-layer="2" x="70" y="76" width="580" height="46" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="92" y="105" font-size="15" fill="#0c4a6e">2 · 行为规范　— 应该/不应该怎么做</text>
+      <rect data-layer="3" x="70" y="132" width="580" height="46" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="92" y="161" font-size="15" fill="#14532d">3 · 输出格式　— 回复的结构与样式</text>
+      <rect data-layer="4" x="70" y="188" width="580" height="46" rx="10" fill="#fef3c7" stroke="#d97706"/>
+      <text x="92" y="217" font-size="15" fill="#78350f">4 · 工具指南　— 有哪些工具、何时用</text>
+      <rect data-layer="5" x="70" y="244" width="580" height="46" rx="10" fill="#fee2e2" stroke="#ef4444"/>
+      <text x="92" y="273" font-size="15" fill="#7f1d1d">5 · 边界条件　— 何时拒绝、何时上报</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 4-1</strong>　五层 System Prompt 架构。越靠上的层次决定 Agent “是什么”，越靠下的层次约束它“不做什么”；点击下方按钮可单独高亮一层并阅读该层的写法要点。该分层为本教程的工程归纳与教学示意，并非论文原图。</figcaption>
+  <div class="controls" role="group" aria-label="查看某一层写法要点">
+    <button type="button" data-layer="1" aria-pressed="true">1 角色定义</button>
+    <button type="button" data-layer="2" aria-pressed="false">2 行为规范</button>
+    <button type="button" data-layer="3" aria-pressed="false">3 输出格式</button>
+    <button type="button" data-layer="4" aria-pressed="false">4 工具指南</button>
+    <button type="button" data-layer="5" aria-pressed="false">5 边界条件</button>
+  </div>
+  <div class="layer-detail" aria-live="polite">
+    <p data-detail="1">用一句话锚定身份与职责，例如“你是一个专业的金融分析助理”，让模型先建立角色再谈任务。</p>
+    <p data-detail="2" hidden>把可执行的规则写成列表（先思考再行动、失败重试上限、信息不清时追问），而不是模糊的形容词。</p>
+    <p data-detail="3" hidden>约定输出的结构与样式（Markdown 标题/表格、必须附来源），下游解析和人工阅读都会更省力。</p>
+    <p data-detail="4" hidden>逐个说明工具名与触发时机（何时 search_web、何时 read_url），减少模型误选或空转。</p>
+    <p data-detail="5" hidden>明确拒答与上报条件（隐私、危险操作、连续失败），这是 Agent 安全性的第一道防线。</p>
+  </div>
+</figure>
 
 <table>
     <thead>
@@ -126,7 +342,7 @@
 </code></pre>
 
 <div class="tip">
-    <strong>设计理念：</strong> 注意这个 Prompt 使用了明确的"章节标题"（##）和结构化的列表。清晰的格式让 LLM 更容易理解你的意图。研究表明，在 System Prompt 中使用结构化格式（Markdown 标题、列表、表格）比纯段落文本的效果好 30% 以上。
+    <strong>设计理念：</strong> 注意这个 Prompt 使用了明确的"章节标题"（##）和结构化的列表。清晰的格式让 LLM 更容易理解你的意图。用结构化格式（Markdown 标题、列表、表格）把规则讲清楚，通常比纯段落文本更易被遵循，这也是 in-context learning 的基本结论（Brown et al., 2020, <a href="https://arxiv.org/abs/2005.14165">arXiv:2005.14165</a>）。
 </div>
 
 <h3>模板模式</h3>
@@ -187,16 +403,16 @@ SYSTEM_PROMPT += "\n\n## 参考示例\n" + FEW_SHOT_EXAMPLE
 
 <h3>Chain-of-Thought：让 Agent"说出推理过程"</h3>
 
-<p>CoT 提示的核心思想很简单：<strong>让模型在给出答案之前，先输出推理过程</strong>。对于 Agent 来说，这个"推理过程"就是 ReAct 循环中的 Thought 部分。但 CoT 还有一些进阶技巧值得掌握。</p>
+<p>CoT 提示的核心思想很简单：<strong>让模型在给出答案之前，先输出推理过程</strong>（Wei et al., 2022, <a href="https://arxiv.org/abs/2201.11903">arXiv:2201.11903</a>）。对于 Agent 来说，这个"推理过程"就是 ReAct 循环中的 Thought 部分。但 CoT 还有一些进阶技巧值得掌握。</p>
 
 <ul>
-    <li><strong>Zero-shot CoT：</strong> 在 System Prompt 中加入一句"让我们一步一步思考"，就能显著提升推理质量。这个技巧简单但效果惊人，是 Prompt 工程中最具性价比的优化。</li>
+    <li><strong>Zero-shot CoT：</strong> 在 System Prompt 中加入一句"让我们一步一步思考"，就能显著提升推理质量（Kojima et al., 2022, <a href="https://arxiv.org/abs/2205.11916">arXiv:2205.11916</a>）。这个技巧简单但效果惊人，是 Prompt 工程中最具性价比的优化。</li>
     <li><strong>Plan-and-Solve：</strong> 在执行具体步骤之前，先让 Agent 输出一个完整计划。例如"我计划分三步完成：第一步搜索背景信息，第二步分析数据，第三步生成报告。"这种方式特别适合需要多步规划的复杂任务。</li>
     <li><strong>ReAct + CoT 结合：</strong> 在每一步 Thought 中嵌入 CoT 推理——"让我分析一下当前的进度：我已经完成了搜索，找到了 5 篇相关论文。接下来我需要逐一阅读摘要，筛选出 3 篇最重要的。"</li>
 </ul>
 
 <div class="highlight">
-    <strong>实践经验：</strong> 我们团队做过一个有趣的对比实验：在相同的 Agent 代码上，仅仅把 System Prompt 从"请回答用户问题"改为"让我们一步一步思考，在每一步中分析当前状态并规划下一步"，任务成功率提升了 47%。这个改进只需要一秒钟的 Prompt 编辑，零成本，效果却不亚于换一个更强的模型。
+    <strong>实践经验：</strong> 我们团队做过一个有趣的对比实验：在相同的 Agent 代码上，仅仅把 System Prompt 从"请回答用户问题"改为"让我们一步一步思考，在每一步中分析当前状态并规划下一步"，任务成功率有可见提升（团队内部教学示意，非公开基准，仅供参考）。这个改进只需要一秒钟的 Prompt 编辑，零成本，效果却不亚于换一个更强的模型。
 </div>
 
 <h2>4.3 结构化输出：JSON Mode 与 Pydantic</h2>
@@ -433,8 +649,23 @@ def evaluate_prompt(system_prompt, test_cases):
             <a href="index.html">📖 返回目录</a>
             <a href="05.html">下一章 →</a>
         </div>
-    </div>
+    </article></main>
 </div>
 </div>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-layer]');
+  function select(id) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-layer') === id ? 'true' : 'false'); });
+    document.querySelectorAll('[data-detail]').forEach(function (p) { p.hidden = p.getAttribute('data-detail') !== id; });
+    document.querySelectorAll('#fig4-stack rect[data-layer]').forEach(function (r) {
+      var on = r.getAttribute('data-layer') === id;
+      r.setAttribute('stroke-width', on ? '3.5' : '1.5');
+      r.setAttribute('opacity', on ? '1' : '0.62');
+    });
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { select(b.getAttribute('data-layer')); }); });
+})();
+</script>
 </body>
 </html>
