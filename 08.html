@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第8章 LangChain 1.x 统一API - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+    </style>
+    <style>
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px;min-width:0}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+    </style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第8章 LangChain 1.x 统一 API</h2>
+<h1>第8章 LangChain 1.x 统一 API</h1>
 
 <p>如果你在 2024 年接触过 LangChain，大概率体验过那种"改个版本号就要重写全部代码"的酸爽。从 0.1 到 0.3，每次大版本更新几乎都是一次重构——今天用 LLMChain，明天告诉你 deprecated 了请用 RunnableSequence，后天又说你该用 LCEL（LangChain Expression Language）。社区的吐槽声浪之大，以至于 LangChain 团队在 2025 年痛下决心，推出了 1.0 大版本，核心目标就是两个字——<strong>统一</strong>。</p>
 
@@ -57,6 +238,38 @@
 <h2>8.1 LangChain 1.x 架构总览</h2>
 
 <p>1.x 版本最核心的架构变化可以概括为一句话：<strong>万物皆 Runnable</strong>。在 0.x 时代，LangChain 的组件体系非常混乱——模型有 Model 类、链有 Chain 类、工具有 Tool 类、Agent 有 AgentExecutor 类，每个体系都有自己的抽象基类和调用方式。而 1.x 将这些全部统一到了 <code>Runnable</code> 协议之下。</p>
+
+<figure id="fig-runnable-unify">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig8-title fig8-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig8-title">从碎片化基类到统一 Runnable 协议</title>
+    <desc id="fig8-desc">状态一：0.x 时代 Model/Chain/Tool/Agent 各自继承不同基类，调用方式不统一。状态二：1.x 时代四类组件全部实现 Runnable 协议，统一用 invoke/pipe/| 组合。</desc>
+    <defs><marker id="fig8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g class="stage" id="fig8-s1">
+      <text x="360" y="46" text-anchor="middle" font-size="15" fill="#7f1d1d">0.x：各自为政，四套独立基类</text>
+      <rect x="30" y="120" width="150" height="120" rx="10" fill="#fee2e2" stroke="#ef4444"/><text x="105" y="170" text-anchor="middle" font-size="14" fill="#7f1d1d">Model</text><text x="105" y="196" text-anchor="middle" font-size="12" fill="#991b1b">BaseLLM</text>
+      <rect x="200" y="120" width="150" height="120" rx="10" fill="#fee2e2" stroke="#ef4444"/><text x="275" y="170" text-anchor="middle" font-size="14" fill="#7f1d1d">Chain</text><text x="275" y="196" text-anchor="middle" font-size="12" fill="#991b1b">LLMChain</text>
+      <rect x="370" y="120" width="150" height="120" rx="10" fill="#fee2e2" stroke="#ef4444"/><text x="445" y="170" text-anchor="middle" font-size="14" fill="#7f1d1d">Tool</text><text x="445" y="196" text-anchor="middle" font-size="12" fill="#991b1b">Tool 类</text>
+      <rect x="540" y="120" width="150" height="120" rx="10" fill="#fee2e2" stroke="#ef4444"/><text x="615" y="170" text-anchor="middle" font-size="14" fill="#7f1d1d">Agent</text><text x="615" y="196" text-anchor="middle" font-size="12" fill="#991b1b">AgentExecutor</text>
+    </g>
+    <g class="stage" id="fig8-s2" hidden>
+      <rect x="180" y="20" width="360" height="52" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="360" y="51" text-anchor="middle" font-size="15" fill="#4c1d95">Runnable 协议：invoke / pipe / |</text>
+      <rect x="30" y="200" width="150" height="72" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="105" y="243" text-anchor="middle" font-size="13" fill="#14532d">ChatModel</text>
+      <rect x="200" y="200" width="150" height="72" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="275" y="243" text-anchor="middle" font-size="13" fill="#14532d">RunnableSequence</text>
+      <rect x="370" y="200" width="150" height="72" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="445" y="243" text-anchor="middle" font-size="13" fill="#14532d">ChatPromptTemplate</text>
+      <rect x="540" y="200" width="150" height="72" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="615" y="243" text-anchor="middle" font-size="13" fill="#14532d">Tool</text>
+      <line x1="300" y1="72" x2="140" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig8-arrow)"/>
+      <line x1="340" y1="72" x2="285" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig8-arrow)"/>
+      <line x1="380" y1="72" x2="435" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig8-arrow)"/>
+      <line x1="420" y1="72" x2="600" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#fig8-arrow)"/>
+      <text x="360" y="150" text-anchor="middle" font-size="13" fill="#475569">一套 API 语义驾驭整个框架</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 8-1</strong>　0.x 到 1.x 的抽象收敛。左边是四套互不相通的基类与调用方式，右边把所有组件统一到 <code>Runnable</code> 一个协议下（都实现 invoke，都可用 <code>|</code> 串联），从而把“学四套 API”降为“学一套”。点击下方按钮对比两个时代；该图为本文教学示意。</figcaption>
+  <div class="controls" role="group" aria-label="对比 0.x 与 1.x 抽象">
+    <button type="button" data-stage="fig8-s1" aria-pressed="true">状态一 · 0.x 碎片化</button>
+    <button type="button" data-stage="fig8-s2" aria-pressed="false">状态二 · 1.x 统一协议</button>
+  </div>
+</figure>
 
 <table>
     <thead>
@@ -103,7 +316,7 @@
 <p>这个统一的本质意义在于：无论是模型调用、提示处理、工具执行还是 Agent 决策，都可以用同样的 <code>invoke()</code> 方法来执行，都可以用 <code>pipe()</code> 或 <code>|</code> 操作符来组合。这极大降低了学习曲线——你只需要学会一套 API 语义，就能驾驭整个框架。</p>
 
 <div class="tip">
-    <strong>升级迁移成本：</strong> 根据 LangChain 官方 2026 年初的统计，从 0.3 迁移到 1.x 平均每个项目需要改动约 40% 的代码量。但迁移后的代码量平均减少了 30%，因为 1.x 的 API 更加简洁统一。
+    <strong>升级迁移成本：</strong> 从 0.3 迁移到 1.x 并不是无缝的——调用方式、导入路径与 Agent 构造方式都变了，通常需要成比例地重写应用层代码（具体改动量因项目而异，此处不给出具体百分比以免误导）。但迁移后的代码普遍更简洁，因为 1.x 的 API 更加统一。
 </div>
 
 <h2>8.2 统一 create_agent API 详解</h2>
@@ -409,8 +622,24 @@ print(f"中间步骤：{result['intermediate_steps']}")</code></pre>
     <a href="09.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
 </div>
 </div>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
