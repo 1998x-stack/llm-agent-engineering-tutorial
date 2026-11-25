@@ -321,7 +321,7 @@ code{overflow-wrap:anywhere}
 
 <h2>8.2 统一 create_agent API 详解</h2>
 
-<p>在 1.x 中，创建 Agent 的方式被极大地简化了。不再需要手动拼接 Prompt、绑定工具、初始化 AgentExecutor——一个 <code>create_agent()</code> 工厂函数搞定一切：</p>
+<p>在 1.x 中，创建 Agent 的方式被极大地简化了。不再需要手动拼接 Prompt、绑定工具、初始化 AgentExecutor——一个 <code>create_agent()</code> 工厂函数搞定一切。它内部仍然驱动的是经典的“推理 → 行动 → 观察”循环（ReAct: Yao et al., 2022, <a href="https://arxiv.org/abs/2210.03629">arXiv:2210.03629</a>）：</p></p>
 
 <pre><code>from langchain.agents import create_agent
 from langchain.chat_models import ChatOpenAI
