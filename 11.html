@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第11章 条件分支与循环 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+    <style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+    </style>
+    <style>
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px;min-width:0}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+    </style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第11章 条件分支与循环</h2>
+<h1>第11章 条件分支与循环</h1>
 
 <p>上一章我们学习了 LangGraph 的基础——StateGraph 的核心概念和 Checkpoint 机制。但老实说，光会搭一条直线或者简单的分支，还远不够应付真实世界的 Agent 需求。你可能已经遇到过这种情况：Agent 第一次调用工具得到了错误结果，它需要再试一次；或者 Agent 在多轮对话中逐渐偏离了原始目标，需要被"拉回来"；又或者你希望 Agent 能对自己的输出进行反思和修正——这些都涉及到 <strong>条件分支</strong> 和 <strong>循环</strong>。</p>
 
@@ -138,7 +319,45 @@ graph.set_finish_point("close")</code></pre>
 
 <p>循环是 LangGraph 中真正让 Agent "变聪明"的特性。一个没有循环的 Agent 只是一条流水线；有循环的 Agent 才能迭代、反思、改进。</p>
 
-<p>最基本的循环就是我们在第 10 章见过的 ReAct 模式——"agent → tool → agent" 形成一个循环。但更强大的循环模式是<strong>自反思（Self-Reflection）</strong>——Agent 对自己的输出进行评估，如果不满足质量标准，就重新执行：</p>
+<figure id="fig-branch-loop">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig11-title fig11-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig11-title">条件分支与自反思循环</title>
+    <desc id="fig11-desc">状态一：analyze 节点后由路由函数返回不同节点名，分别流向 normal、priority、escalation 三条分支再汇入 close。状态二：generate 生成草稿，evaluate 评估，决策节点在达标或达到最大迭代时才结束，否则带反馈回到 generate 重生成。</desc>
+    <defs><marker id="fig11-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g class="stage" id="fig11-s1">
+      <text x="360" y="26" text-anchor="middle" font-size="14" fill="#4c1d95">条件边：路由函数返回目标节点名</text>
+      <rect x="30" y="120" width="150" height="64" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="105" y="158" text-anchor="middle" font-size="14" fill="#4c1d95">analyze</text>
+      <rect x="300" y="34" width="180" height="56" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="390" y="68" text-anchor="middle" font-size="13" fill="#14532d">normal_flow</text>
+      <rect x="300" y="124" width="180" height="56" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="390" y="158" text-anchor="middle" font-size="13" fill="#0c4a6e">priority_flow</text>
+      <rect x="300" y="214" width="180" height="56" rx="10" fill="#fee2e2" stroke="#ef4444"/><text x="390" y="248" text-anchor="middle" font-size="13" fill="#7f1d1d">escalation_flow</text>
+      <rect x="560" y="124" width="130" height="56" rx="10" fill="#f1f5f9" stroke="#7461ba"/><text x="625" y="158" text-anchor="middle" font-size="14" fill="#3b2f66">close</text>
+      <line x1="180" y1="140" x2="298" y2="70" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+      <line x1="180" y1="152" x2="298" y2="152" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+      <line x1="180" y1="164" x2="298" y2="238" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+      <line x1="480" y1="62" x2="624" y2="122" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+      <line x1="480" y1="152" x2="558" y2="152" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+      <line x1="480" y1="242" x2="690" y2="182" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+    </g>
+    <g class="stage" id="fig11-s2" hidden>
+      <text x="360" y="26" text-anchor="middle" font-size="14" fill="#4c1d95">自反思循环：带终止条件与反馈回边</text>
+      <rect x="70" y="54" width="180" height="64" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="160" y="92" text-anchor="middle" font-size="14" fill="#4c1d95">generate_draft</text>
+      <rect x="460" y="54" width="180" height="64" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="550" y="92" text-anchor="middle" font-size="14" fill="#0c4a6e">evaluate_draft</text>
+      <rect x="300" y="196" width="230" height="62" rx="10" fill="#fef3c7" stroke="#d97706"/><text x="415" y="225" text-anchor="middle" font-size="13" fill="#78350f">达标 or iteration≥max ?</text>
+      <rect x="580" y="200" width="120" height="54" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="640" y="234" text-anchor="middle" font-size="14" fill="#14532d">END</text>
+      <line x1="250" y1="86" x2="458" y2="86" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/><text x="354" y="78" text-anchor="middle" font-size="12" fill="#64748b">草稿</text>
+      <line x1="550" y1="118" x2="460" y2="194" stroke="#64748b" stroke-width="2" marker-end="url(#fig11-arrow)"/>
+      <line x1="530" y1="227" x2="578" y2="227" stroke="#16a34a" stroke-width="2" marker-end="url(#fig11-arrow)"/><text x="554" y="219" text-anchor="middle" font-size="12" fill="#14532d">是</text>
+      <path d="M300 227 L160 227 L160 120" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#fig11-arrow)"/><text x="215" y="219" text-anchor="middle" font-size="12" fill="#78350f">否：带反馈重生成</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 11-1</strong>　条件分支与循环。左：路由函数读 State 后返回节点名，把流程导向不同分支（三种情形殊途同归到 close）。右：自反思循环里 generate → evaluate 反复迭代，决策节点“达标或达到最大迭代”才结束，否则把评估反馈拼回提示重生成。点击下方按钮切换两种结构；该图为本文教学示意，对应代码见 11.1 / 11.2 节。</figcaption>
+  <div class="controls" role="group" aria-label="切换分支与循环图示">
+    <button type="button" data-stage="fig11-s1" aria-pressed="true">状态一 · 条件分支</button>
+    <button type="button" data-stage="fig11-s2" aria-pressed="false">状态二 · 自反思循环</button>
+  </div>
+</figure>
+
+<p>最基本的循环就是我们在第 10 章见过的 ReAct 模式——"agent → tool → agent" 形成一个循环（ReAct: Yao et al., 2022, <a href="https://arxiv.org/abs/2210.03629">arXiv:2210.03629</a>）。但更强大的循环模式是<strong>自反思（Self-Reflection）</strong>——Agent 对自己的输出进行评估，如果不满足质量标准，就重新执行：</p>
 
 <pre><code>from langgraph.graph import StateGraph
 from typing import TypedDict, Literal
@@ -242,7 +461,7 @@ graph.add_conditional_edges(
 </table>
 
 <div class="tip">
-    <strong>迭代次数的选择：</strong> 自反思模式虽然能显著提升输出质量（根据我们的数据，1 次反思平均提升 25% 的质量评分），但每次迭代都消耗额外的 Token。建议对简单任务设置 max_iterations=1（只反思一次），对复杂任务设置 2-3 次。超过 3 次后边际收益急剧下降。
+    <strong>迭代次数的选择：</strong> 自反思模式能提升输出质量（作为教学示意：多一次反思通常会让草稿在完整性、准确性等方面得分上升，具体幅度因任务而异，此处不给出具体百分比），但每次迭代都消耗额外的 Token。建议对简单任务设置 max_iterations=1（只反思一次），对复杂任务设置 2-3 次。超过 3 次后边际收益急剧下降。
 </div>
 
 <h2>11.3 循环检测与终止条件</h2>
@@ -533,8 +752,24 @@ print(f"是否成功：{result['success']}")</code></pre>
     <a href="12.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
 </div>
 </div>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
