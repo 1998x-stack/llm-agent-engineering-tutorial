@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第14章 生产化部署与监控 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+<style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第14章 生产化部署与监控</h2>
+<h1>第14章 生产化部署与监控</h1>
 
 <p>如果你问一位有经验的 AI 工程师："开发 Agent 最难的是什么？"答案大概率不是"写 Agent 的逻辑"，而是<strong>"让 Agent 在生产环境稳定运行"</strong>。开发环境的 Agent 跑得再好，上了生产也可能问题百出——模型降级导致 Token 消耗暴增、Prompt 改动导致输出格式变化、某个用户的特殊输入触发了 Agent 的死循环……这些问题在开发环境基本发现不了，只有在生产环境、在真实用户的压力下才会暴露。</p>
 
@@ -162,6 +343,36 @@ app = graph.compile(
 # - Token 消耗趋势（成本监控）
 # - 模型 Fallback 触发率（监控模型可用性）</code></pre>
 
+<figure id="fig14-trace">
+  <svg viewBox="0 0 720 290" role="img" aria-labelledby="fig14-title fig14-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig14-title">一次 Agent 运行的 Trace 瀑布图</title>
+    <desc id="fig14-desc">单步问答时，Agent.run 下只有一个 LLM 子调用；带工具的运行时，Agent.run 下依次展开 LLM 规划、工具调用、LLM 汇总三个子 span。</desc>
+    <g class="stage" id="fig14-s1">
+      <text x="128" y="61" text-anchor="end" font-size="13" fill="#4c1d95">Agent.run</text>
+      <rect x="140" y="40" width="520" height="34" rx="8" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="128" y="121" text-anchor="end" font-size="13" fill="#0c4a6e">└ LLM.call</text>
+      <rect x="170" y="100" width="460" height="34" rx="8" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="360" y="175" text-anchor="middle" font-size="13" fill="#475569">单步问答：一次 Agent 调用只包含一次 LLM 子调用</text>
+    </g>
+    <g class="stage" id="fig14-s2" hidden>
+      <text x="128" y="53" text-anchor="end" font-size="13" fill="#4c1d95">Agent.run</text>
+      <rect x="140" y="32" width="520" height="32" rx="8" fill="#ede9fe" stroke="#8b5cf6"/>
+      <text x="128" y="112" text-anchor="end" font-size="13" fill="#0c4a6e">├ LLM.call（规划）</text>
+      <rect x="160" y="88" width="180" height="32" rx="8" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="128" y="162" text-anchor="end" font-size="13" fill="#78350f">├ Tool: search</text>
+      <rect x="160" y="138" width="240" height="32" rx="8" fill="#fef3c7" stroke="#d97706"/>
+      <text x="128" y="212" text-anchor="end" font-size="13" fill="#0c4a6e">└ LLM.call（汇总）</text>
+      <rect x="160" y="188" width="440" height="32" rx="8" fill="#e0f2fe" stroke="#0ea5e9"/>
+      <text x="360" y="255" text-anchor="middle" font-size="13" fill="#475569">带工具的 run：子调用依次展开，每个 span 各自记录延迟与 Token</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 14-1</strong>　Trace 的本质是一棵有向的调用树，横向瀑布图展示每个 span 的起止与嵌套关系。<a href="#fig14-trace">用下方按钮切换两种运行形态</a>。该图为教学示意，用于说明 span 嵌套结构；具体的字段名与仪表盘样式请以所用 LangSmith 版本的官方文档为准。</figcaption>
+  <div class="controls" role="group" aria-label="切换运行形态">
+    <button type="button" data-stage="fig14-s1" aria-pressed="true">单步问答</button>
+    <button type="button" data-stage="fig14-s2" aria-pressed="false">带工具的多步 run</button>
+  </div>
+</figure>
+
 <div class="highlight">
     <strong>关键指标解读：</strong>
     <ul>
@@ -170,6 +381,7 @@ app = graph.compile(
         <li><strong>模型 Fallback 率：</strong> 超过 5% 说明主模型服务不稳定，需要考虑切换提供商或增加配额。</li>
         <li><strong>Token 消耗/请求：</strong> 出现异常峰值往往意味着 Agent 在某个环节产生了过长的输出，需要检查 Prompt 或工具返回内容。</li>
     </ul>
+    <p><em>注：上述循环次数（2-5 次、&gt;10 次）、工具成功率（95%）、Fallback 率（5%）等阈值为本教程给出的教学经验值，用于说明“看趋势而非看单点”的思路，并非来自某篇论文或厂商公开基准的硬性指标，实际取值应结合业务基线重新标定。</em></p>
 </div>
 
 <h2>14.3 Prompt 版本管理与 A/B 测试</h2>
@@ -543,7 +755,23 @@ async def agent_query(request: QueryRequest):
     <a href="15.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
