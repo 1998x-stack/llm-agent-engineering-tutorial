@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第16章 GroupChat与协作模式 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+<style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第16章 GroupChat 与协作模式</h2>
+<h1>第16章 GroupChat 与协作模式</h1>
 
 <p>上一章我们学习了 AutoGen 的双 Agent 对话——两个 Agent 一对一交流，像是一场深度对谈。但现实中的问题解决往往需要更多人参与：产品经理提需求、架构师画设计、工程师写代码、测试人员验证——每个角色各司其职，通过群组讨论达成共识。AutoGen 的 <strong>GroupChat</strong> 正是为这种多角色协作场景而设计的。</p>
 
@@ -106,6 +287,29 @@ manager = GroupChatManager(
 <div class="tip">
     <strong>概念辨析：</strong> GroupChat 是"数据容器"，管理消息和参与者；GroupChatManager 是"控制逻辑"，决定谁发言、何时结束。两者各司其职，类似于 MVC 架构中的 Model 和 Controller。
 </div>
+
+<figure id="fig16-loop">
+  <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig16-title fig16-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig16-title">GroupChat 的发言者选择循环</title>
+    <desc id="fig16-desc">GroupChatManager 选择下一个发言者，被选中的 Agent 发言，消息写入 messages 队列，再检查终止条件，然后回到 Manager。auto 策略由 LLM 读取上下文判断，round_robin 按列表顺序轮流。</desc>
+    <defs><marker id="fig16-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="40" y="40" width="250" height="64" rx="12" fill="#ede9fe" stroke="#8b5cf6"/><text x="165" y="78" text-anchor="middle" font-size="14" fill="#4c1d95">GroupChatManager 选择发言者</text>
+    <rect x="430" y="40" width="250" height="64" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/><text x="555" y="78" text-anchor="middle" font-size="14" fill="#0c4a6e">选中 Agent 发言</text>
+    <rect x="430" y="230" width="250" height="64" rx="12" fill="#fef3c7" stroke="#d97706"/><text x="555" y="268" text-anchor="middle" font-size="14" fill="#78350f">消息写入 messages 队列</text>
+    <rect x="40" y="230" width="250" height="64" rx="12" fill="#dcfce7" stroke="#16a34a"/><text x="165" y="268" text-anchor="middle" font-size="14" fill="#14532d">终止条件（max_round 等）</text>
+    <line x1="290" y1="72" x2="424" y2="72" stroke="#64748b" stroke-width="2" marker-end="url(#fig16-arrow)"/>
+    <line x1="555" y1="104" x2="555" y2="224" stroke="#64748b" stroke-width="2" marker-end="url(#fig16-arrow)"/>
+    <line x1="430" y1="262" x2="296" y2="262" stroke="#64748b" stroke-width="2" marker-end="url(#fig16-arrow)"/>
+    <line x1="165" y1="230" x2="165" y2="110" stroke="#64748b" stroke-width="2" marker-end="url(#fig16-arrow)"/>
+    <g class="stage" id="fig16-s1"><text x="360" y="164" text-anchor="middle" font-size="13" fill="#4c1d95">auto：由 LLM 读取 messages 判断谁最合适</text></g>
+    <g class="stage" id="fig16-s2" hidden><text x="360" y="164" text-anchor="middle" font-size="13" fill="#14532d">round_robin：按 agents 列表顺序依次发言</text></g>
+  </svg>
+  <figcaption><strong>图 16-1</strong>　GroupChat 是一个“选择发言者 → 发言 → 追写消息 → 查终止条件”的闭环，GroupChatManager 掌握控制权。<a href="#fig16-loop">用下方按钮切换两种选择策略</a>。多 Agent 对话机制参见 AutoGen 论文（<a href="https://arxiv.org/abs/2308.08155">arXiv:2308.08155</a>）；图中策略名称与参数为教学示意，具体 API 以所用版本为准。</figcaption>
+  <div class="controls" role="group" aria-label="切换选择策略">
+    <button type="button" data-stage="fig16-s1" aria-pressed="true">auto 自动选择</button>
+    <button type="button" data-stage="fig16-s2" aria-pressed="false">round_robin 轮询</button>
+  </div>
+</figure>
 
 <h2>16.2 GroupChatManager 轮询策略</h2>
 
@@ -431,7 +635,23 @@ sec_reviewer.initiate_chat(
             <a href="index.html">📖 返回目录</a>
             <a href="17.html">下一章 →</a>
         </div>
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
