@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第26章 项目实战：智能客服系统 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+<style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第26章 项目实战：智能客服系统</h2>
+<h1>第26章 项目实战：智能客服系统</h1>
 
 <p>恭喜你走到这里！经过前面 25 章的系统学习，你已经掌握了 Agent 技术的全部核心技能——从基础概念到框架生态，从测试策略到安全治理。从这一章开始，我们将用两个完整的实战项目把前面所学融会贯通。</p>
 
@@ -146,6 +327,40 @@
 │               基础设施层                          │
 │  Qdrant(向量库) │ 订单API │ 知识库 │ 客服工作台   │
 └─────────────────────────────────────────────────┘</code></pre>
+
+<figure id="fig26-arch">
+  <svg viewBox="0 0 720 365" role="img" aria-labelledby="fig26-title fig26-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig26-title">智能客服系统的三层架构与人工接管分支</title>
+    <desc id="fig26-desc">客户触点层接入 Web、微信、App 与语音；Agent 编排层（LangGraph）依次执行意图分类、信息收集、知识库检索、回应生成、情感检测与工单操作；基础设施层提供向量库、订单 API、知识库与客服工作台；低置信或高情绪时转入人工接管。</desc>
+    <defs><marker id="fig26-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="30" y="16" width="660" height="48" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="360" y="46" text-anchor="middle" font-size="14" fill="#0c4a6e">客户触点层 · Web / 微信 / App / 语音转文字</text>
+    <rect x="30" y="80" width="660" height="196" rx="12" fill="#f8fafc" stroke="#7461ba" stroke-dasharray="6 4"/><text x="52" y="100" font-size="12" fill="#4c1d95">Agent 编排层（LangGraph）</text>
+    <rect x="52" y="110" width="150" height="40" rx="8" fill="#ede9fe" stroke="#8b5cf6"/><text x="127" y="135" text-anchor="middle" font-size="12" fill="#4c1d95">意图分类</text>
+    <rect x="248" y="110" width="150" height="40" rx="8" fill="#ede9fe" stroke="#8b5cf6"/><text x="323" y="135" text-anchor="middle" font-size="12" fill="#4c1d95">信息收集</text>
+    <rect x="444" y="110" width="200" height="40" rx="8" fill="#fef3c7" stroke="#d97706"/><text x="544" y="135" text-anchor="middle" font-size="12" fill="#78350f">知识库检索（RAG）</text>
+    <rect x="444" y="166" width="200" height="40" rx="8" fill="#dcfce7" stroke="#16a34a"/><text x="544" y="191" text-anchor="middle" font-size="12" fill="#14532d">回应生成</text>
+    <rect x="248" y="166" width="150" height="40" rx="8" fill="#e0f2fe" stroke="#0ea5e9"/><text x="323" y="191" text-anchor="middle" font-size="12" fill="#0c4a6e">情感检测</text>
+    <rect x="52" y="166" width="150" height="40" rx="8" fill="#e0f2fe" stroke="#0ea5e9"/><text x="127" y="191" text-anchor="middle" font-size="12" fill="#0c4a6e">工单操作</text>
+    <rect x="180" y="224" width="360" height="40" rx="8" fill="#fee2e2" stroke="#dc2626"/><text x="360" y="249" text-anchor="middle" font-size="12" fill="#7f1d1d">人工接管（Human-in-the-loop）</text>
+    <rect x="30" y="300" width="660" height="48" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="360" y="330" text-anchor="middle" font-size="13" fill="#4c1d95">基础设施层 · 向量库 / 订单 API / 知识库 / 客服工作台</text>
+    <line x1="202" y1="130" x2="244" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#fig26-arrow)"/>
+    <line x1="398" y1="130" x2="440" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#fig26-arrow)"/>
+    <line x1="544" y1="150" x2="544" y2="162" stroke="#64748b" stroke-width="2" marker-end="url(#fig26-arrow)"/>
+    <line x1="444" y1="186" x2="402" y2="186" stroke="#64748b" stroke-width="2" marker-end="url(#fig26-arrow)"/>
+    <line x1="248" y1="186" x2="206" y2="186" stroke="#64748b" stroke-width="2" marker-end="url(#fig26-arrow)"/>
+    <g class="stage" id="fig26-s1"><text x="360" y="362" text-anchor="middle" font-size="13" fill="#475569">全自动流转：意图分类 → 信息收集 → RAG → 回应生成 → 工单</text></g>
+    <g class="stage" id="fig26-s2" hidden>
+      <rect x="172" y="216" width="376" height="56" rx="12" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/>
+      <line x1="323" y1="206" x2="323" y2="220" stroke="#dc2626" stroke-width="2" marker-end="url(#fig26-arrow)"/>
+      <text x="360" y="362" text-anchor="middle" font-size="13" fill="#7f1d1d">低置信度或检测到高强情绪时，转人工接管并保留完整上下文</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 26-1</strong>　智能客服系统的三层架构：触点层接入渠道，LangGraph 编排层以“管道 + 网关”串起各 Node，基础设施层提供数据与坐席能力。<a href="#fig26-arch">用下方按钮切换自动流转 / 人工接管</a>。本图与上方 26.2 的文本架构图一致，为本章教学说明；具体节点命名与流转条件以实现为准。</figcaption>
+  <div class="controls" role="group" aria-label="切换流转方式">
+    <button type="button" data-stage="fig26-s1" aria-pressed="true">全自动流转</button>
+    <button type="button" data-stage="fig26-s2" aria-pressed="false">触发人工接管</button>
+  </div>
+</figure>
 
 <p>这个架构的核心思想是"<strong>管道 + 网关</strong>"——每个 Node 负责一个独立环节，Agent 编排层作为智能网关协调整个流程。每个 Node 的输出都写入 LangGraph 的 State，供后续 Node 使用。</p>
 
@@ -614,7 +829,23 @@ async def chat_websocket(websocket: WebSocket, session_id: str):
     <a href="27.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>

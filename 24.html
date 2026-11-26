@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第24章 成本优化与性能调优 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+<style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第24章 成本优化与性能调优</h2>
+<h1>第24章 成本优化与性能调优</h1>
 
 <p>2025 年秋天，一家 SaaS 公司的 CTO 跟我分享了他的"成本惊魂记"：他们把一个 AI 客服 Agent 推向了 10 万用户，上线第一个月就收到了 AWS $3.2 万的账单——其中 $2.1 万是 Anthropic 和 OpenAI 的 API 费用。更让他崩溃的是，第二个月这个数字翻了一倍，因为用户发现 Agent 很好用，使用量暴增。"用户增长本来是好事，"他苦笑着说，"但 CFO 看到账单后直接问：这个 Agent 每单在亏钱吧？"</p>
 
@@ -106,6 +287,37 @@
 <div class="tip">
     <strong>成本可视化的第一步：</strong> 在生产环境中，一定要给每个 Agent 调用打上成本标签。推荐使用 LangSmith、Helicone 或自建方案，记录每次调用的 Token 消耗、模型类型、耗时。没有数据支撑的成本优化，就像在黑暗中射击——打中的概率很低。
 </div>
+
+<figure id="fig24-route">
+  <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig24-title fig24-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig24-title">缓存与难度路由的成本控制路径</title>
+    <desc id="fig24-desc">请求先经过语义缓存，命中则直接返回；未命中则交给任务路由，按难度分给便宜的小模型或昂贵的大模型。</desc>
+    <defs><marker id="fig24-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="30" y="130" width="110" height="64" rx="10" fill="#ede9fe" stroke="#8b5cf6"/><text x="85" y="168" text-anchor="middle" font-size="14" fill="#4c1d95">请求</text>
+    <rect x="180" y="130" width="120" height="64" rx="10" fill="#fef3c7" stroke="#d97706"/><text x="240" y="168" text-anchor="middle" font-size="14" fill="#78350f">语义缓存</text>
+    <rect x="350" y="130" width="120" height="64" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/><text x="410" y="168" text-anchor="middle" font-size="14" fill="#0c4a6e">任务路由</text>
+    <rect x="540" y="40" width="150" height="64" rx="10" fill="#dcfce7" stroke="#16a34a"/><text x="615" y="78" text-anchor="middle" font-size="14" fill="#14532d">小模型（便宜）</text>
+    <rect x="540" y="230" width="150" height="64" rx="10" fill="#fee2e2" stroke="#dc2626"/><text x="615" y="268" text-anchor="middle" font-size="14" fill="#7f1d1d">大模型（贵）</text>
+    <line x1="140" y1="162" x2="176" y2="162" stroke="#64748b" stroke-width="2" marker-end="url(#fig24-arrow)"/>
+    <line x1="300" y1="162" x2="346" y2="162" stroke="#64748b" stroke-width="2" marker-end="url(#fig24-arrow)"/>
+    <g class="stage" id="fig24-s1">
+      <line x1="470" y1="150" x2="536" y2="86" stroke="#16a34a" stroke-width="2" marker-end="url(#fig24-arrow)"/>
+      <line x1="470" y1="174" x2="536" y2="238" stroke="#dc2626" stroke-width="2" marker-end="url(#fig24-arrow)"/>
+      <text x="360" y="305" text-anchor="middle" font-size="13" fill="#475569">按难度分流：简单任务降级到小模型，只把难题留给大模型</text>
+    </g>
+    <g class="stage" id="fig24-s2" hidden>
+      <rect x="172" y="122" width="136" height="80" rx="12" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="6 4"/>
+      <line x1="240" y1="126" x2="240" y2="64" stroke="#d97706" stroke-width="2" marker-end="url(#fig24-arrow)"/>
+      <text x="250" y="62" font-size="12" fill="#78350f">命中 → 直接返回</text>
+      <text x="360" y="305" text-anchor="middle" font-size="13" fill="#78350f">语义缓存前置：命中就绕过模型，未命中再走路由</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 24-1</strong>　两个最划算的成本杠杆：先用语义缓存挡住重复请求，再用难度路由把简单请求交给小模型。<a href="#fig24-route">用下方按钮切换两个杠杆</a>。上方表 24-1 的各成本项占比为本章给出的教学估值，并非厂商公开基准；实际比例需以自家监控数据为准。</figcaption>
+  <div class="controls" role="group" aria-label="切换成本杠杆">
+    <button type="button" data-stage="fig24-s1" aria-pressed="true">难度路由</button>
+    <button type="button" data-stage="fig24-s2" aria-pressed="false">语义缓存前置</button>
+  </div>
+</figure>
 
 <h2>24.2 Token 压缩：Prompt 优化与输出约束</h2>
 
@@ -475,6 +687,8 @@ class BatchProcessor:
     </tbody>
 </table>
 
+<p><em>注：上表为教学案例的示意数值，目的是展示各项优化带来的变化方向与量级，并非对真实生产系统的测量结果；成本降幅标题取整为“约 60%”，与表内具体数字不必逐项对应。</em></p>
+
 <p>你看，成本降低了 65% 的同时，响应速度反而提升了一倍以上——因为缓存命中小模型的响应更快。这就是优化策略的"组合拳"效果。</p>
 
 <p>优化的优先级建议：</p>
@@ -502,7 +716,23 @@ class BatchProcessor:
     <a href="25.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
