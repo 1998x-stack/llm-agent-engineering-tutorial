@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第23章 测试策略与质量保障 - LLM Agent 工程实战</title>
-    <link rel="stylesheet" href="theme.css">
+<style>
+/* Violet-Teal Theme — Data/AI (ML, SQL, transformers, NumPy, Pandas, Spark) */
+/* Copy this file into the tutorial project as "theme.css" */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f3ff 0%, #e8f5f0 100%);
+    font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+/* === Layout === */
+.double-border {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+    border-radius: 24px;
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2), inset 0 1px 0 0 #f5f3ff;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background: #faf8ff;
+    border-right: 2px solid #c4b5fd;
+    padding: 24px 16px;
+}
+
+.sidebar h3 {
+    font-size: 1.4rem;
+    color: #6d28d9;
+    border-left: 5px solid #8b5cf6;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+.chapter-list { list-style: none; }
+.chapter-list li { margin-bottom: 6px; }
+
+.chapter-list a {
+    display: block; padding: 8px 12px; text-decoration: none;
+    color: #334155; border-radius: 12px; transition: all 0.2s;
+    font-weight: 500; font-size: 0.92rem;
+}
+
+.chapter-list a:hover {
+    background: #ede9fe;
+    transform: translateX(3px);
+}
+
+.chapter-list .active {
+    background: #7c3aed;
+    color: white;
+    box-shadow: 0 2px 5px rgba(124,58,237,0.3);
+}
+
+/* === Main Content === */
+.main-content { padding: 30px 35px; background: white; }
+
+/* === Typography === */
+h2 {
+    color: #4c1d95;
+    border-left: 6px solid #8b5cf6;
+    padding-left: 15px;
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #5b21b6;
+    margin: 20px 0 10px;
+    font-size: 1.2rem;
+}
+
+h4 {
+    color: #6d28d9;
+    margin: 15px 0 8px;
+    font-size: 1.05rem;
+}
+
+p { line-height: 1.85; margin: 10px 0; color: #1e293b; }
+ul, ol { margin: 10px 0 10px 20px; line-height: 1.8; }
+li { color: #1e293b; margin-bottom: 4px; }
+strong { color: #1e1b4b; }
+
+/* === Code === */
+pre {
+    background: #1e1035; color: #e8e8f0; padding: 15px; border-radius: 12px;
+    overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 15px 0; font-size: 0.9rem; line-height: 1.5;
+}
+
+code {
+    background: #f5f3ff; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+}
+
+pre code { background: none; padding: 0; }
+
+/* === Tables === */
+table {
+    width: 100%; border-collapse: collapse; margin: 15px 0; background: #fafafe;
+}
+
+th, td {
+    border: 1px solid #c4b5fd; padding: 10px; text-align: left;
+}
+
+th {
+    background: #f5f3ff; color: #5b21b6; font-weight: 600;
+}
+
+/* === Callout Boxes === */
+.tip {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #e0f2fe; border-left: 6px solid #0ea5e9;
+}
+
+.warning {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fee2e2; border-left: 6px solid #ef4444;
+}
+
+.highlight {
+    padding: 12px 18px; border-radius: 16px; margin: 15px 0; line-height: 1.7;
+    background: #fef9c3; border: 1px solid #facc15;
+}
+
+/* === Footer Navigation === */
+.footer-nav {
+    margin-top: 45px; padding-top: 20px;
+    border-top: 2px solid #c4b5fd;
+    display: flex; justify-content: space-between;
+}
+
+.footer-nav a {
+    padding: 8px 24px; background: #f1f5f9; text-decoration: none;
+    color: #5b21b6; border-radius: 40px; font-weight: 500; transition: 0.2s;
+}
+
+.footer-nav a:hover {
+    background: #ede9fe; transform: translateY(-2px);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid #c4b5fd; }
+    body { padding: 10px; }
+    .main-content { padding: 20px; }
+}
+
+/* === Semantic article layer (inlined for offline single-file rendering) === */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#4c1d95;color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}
+.skip-link:focus{left:0}
+.main-content{max-width:900px}
+h1{color:#4c1d95;border-left:6px solid #8b5cf6;padding-left:15px;margin:10px 0 18px;font-size:1.85rem;line-height:1.3}
+figure{margin:1.6rem 0;padding:1rem 1rem .9rem;background:#faf8ff;border:1px solid #ddd6fe;border-radius:16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.86rem;color:#475569;line-height:1.65;margin-top:.6rem}
+.stage[hidden]{display:none}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0}
+.controls button{font:inherit;font-size:.85rem;cursor:pointer;background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:40px;padding:.3rem 1rem}
+.controls button[aria-pressed="true"]{background:#7c3aed;color:#fff}
+.controls button:hover{background:#ddd6fe}
+:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+.eq-scroll{overflow-x:auto;padding:.4rem 0}
+code{overflow-wrap:anywhere}
+@media (max-width:480px){table{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.sidebar,.footer-nav,.controls,.skip-link{display:none}.main-content{max-width:none}}
+
+</style>
 </head>
 <body>
+<a class="skip-link" href="#content">跳转至正文</a>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程章节导航">
         <h3>🤖 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 Agent技术概述</a></li>
@@ -41,10 +222,10 @@
             <li><a href="27.html">第27章 项目：自动化研究助手</a></li>
             <li><a href="28.html">第28章 框架选型与趋势展望</a></li>
         </ul>
-    </div>
-    <div class="main-content">
+    </nav>
+    <main class="main-content" id="content"><article>
 
-<h2>第23章 测试策略与质量保障</h2>
+<h1>第23章 测试策略与质量保障</h1>
 
 <p>2025 年初，我参与了一家金融科技公司 Agent 系统的上线评审。他们的交易监控 Agent 已经通过了全部功能测试，但在我们做"影子模式"并行验证时发现了一个隐蔽的问题：当用户查询的股票代码包含前缀零时（比如 "00700" 而非 "700"），Agent 调用行情 API 时没有做规范化处理，导致查询失败。更麻烦的是，失败后 Agent 没有重试，而是直接告诉用户"该股票代码不存在"——这是一个非常严重的虚假否定。事后复盘时发现，这个问题之所以逃过了测试，是因为测试用例中所有的股票代码都是标准格式，没有一个带前导零的。</p>
 
@@ -100,6 +281,31 @@
 <div class="tip">
     <strong>经验之谈：</strong> 在 Agent 项目中，单元测试和 Mock 测试应该覆盖 80% 以上的场景，端到端测试只需要覆盖关键路径。这不仅是因为端到端测试成本高，还因为 LLM API 调用会引入不必要的随机性，让测试结果难以复现。
 </div>
+
+<figure id="fig23-pyramid">
+  <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig23-title fig23-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig23-title">Agent 测试金字塔</title>
+    <desc id="fig23-desc">底层是大量的单元测试（工具函数与组件），中层是 Mock LLM 测试（固定模型输出、验证逻辑），顶层是少量的端到端集成测试（真实 LLM、只覆盖关键路径）。</desc>
+    <polygon points="60,278 660,278 575,196 145,196" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="360" y="240" text-anchor="middle" font-size="14" fill="#14532d">单元测试 · 工具函数 / 组件</text><text x="360" y="260" text-anchor="middle" font-size="12" fill="#14532d">数量最多 · 跑得最快</text>
+    <polygon points="145,196 575,196 495,114 225,114" fill="#fef3c7" stroke="#d97706"/>
+    <text x="360" y="158" text-anchor="middle" font-size="14" fill="#78350f">Mock LLM 测试 · 验证逻辑</text><text x="360" y="177" text-anchor="middle" font-size="12" fill="#78350f">可控输入输出 · 可复现</text>
+    <polygon points="225,114 495,114 420,40 300,40" fill="#e0f2fe" stroke="#0ea5e9"/>
+    <text x="360" y="72" text-anchor="middle" font-size="13" fill="#0c4a6e">端到端集成测试</text><text x="360" y="90" text-anchor="middle" font-size="12" fill="#0c4a6e">真实 LLM · 只覆盖关键路径</text>
+    <g class="stage" id="fig23-s1">
+      <text x="360" y="308" text-anchor="middle" font-size="13" fill="#7f1d1d">不经 Mock：每次真实调用，慢且有随机性，结果难复现</text>
+    </g>
+    <g class="stage" id="fig23-s2" hidden>
+      <polygon points="141,200 579,200 491,110 229,110" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="360" y="308" text-anchor="middle" font-size="13" fill="#78350f">插入 Mock：固定模型输出，把“测试逻辑”与“测试模型”拆开</text>
+    </g>
+  </svg>
+  <figcaption><strong>图 23-1</strong>　面向 Agent 的测试金字塔：越往下越多越快越确定，越往上越少越慢越接近真实。<a href="#fig23-pyramid">用下方按钮切换“是否使用 Mock”</a>。测试金字塔概念参自 Mike Cohn, <em>Succeeding with Agile</em>（2009）；Agent 场景的分层调整为本章教学建议。</figcaption>
+  <div class="controls" role="group" aria-label="切换 Mock 视角">
+    <button type="button" data-stage="fig23-s1" aria-pressed="true">不使用 Mock</button>
+    <button type="button" data-stage="fig23-s2" aria-pressed="false">使用 Mock LLM</button>
+  </div>
+</figure>
 
 <h2>23.2 单元测试：工具函数与组件</h2>
 
@@ -447,7 +653,23 @@ class TestE2E:
     <a href="24.html">下一章 →</a>
 </div>
 
-    </div>
+    </article></main>
+<script>
+(function () {
+  var btns = document.querySelectorAll('.controls button[data-stage]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-stage');
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-stage') === target;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) g.hidden = !on;
+      });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </body>
