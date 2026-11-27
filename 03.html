@@ -267,7 +267,7 @@ code{overflow-wrap:anywhere}
 
 <h3>使用 uv：现代 Python 包管理器</h3>
 
-<p>如果你是 2024 年之前开始用 Python 的，大概率习惯用 pip + venv 或 Poetry。但在 2026 年，<strong>uv</strong>（Astral 团队出品）已经成为了 Python 包管理的事实标准——它用 Rust 编写，速度比 pip 快 10-100 倍，而且完全兼容 pip 的依赖格式。</p>
+<p>如果你是 2024 年之前开始用 Python 的，大概率习惯用 pip + venv 或 Poetry。但在 2026 年，<strong>uv</strong>（Astral 团队出品）已经成为了 Python 包管理的事实标准——它用 Rust 编写，安装与依赖解析通常比 pip 快一个量级（官方基准宣称可快 10-100 倍，实际倍数随缓存与环境而异），而且完全兼容 pip 的依赖格式。</p>
 
 <pre><code># 安装 uv（macOS/Linux）
 curl -LsSf https://astral.sh/uv/install.sh | sh

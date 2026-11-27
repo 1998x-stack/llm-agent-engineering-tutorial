@@ -310,7 +310,7 @@ code{overflow-wrap:anywhere}
 <p>回顾 Agent 的发展史，短短四年间经历了从概念萌芽到工程成熟的全过程。让我带你快速过一遍这段激动人心的历程。</p>
 
 <h3>2023 年：AutoGPT 引爆概念</h3>
-<p>2023 年初，GPT-4 发布后不久，一个名为 <strong>AutoGPT</strong> 的开源项目在 GitHub 上一夜爆红，短短几周斩获数万 Star。它展示了一个令人震惊的能力：给定一个目标（比如"帮我研究一下量子计算的现状并写一份报告"），AutoGPT 会自动分解任务、搜索网络、阅读结果、迭代优化，最终输出成品。这是公众第一次直观感受到"AI 自主完成任务"的震撼。</p>
+<p>2023 年初，GPT-4 发布后不久，一个名为 <strong>AutoGPT</strong> 的开源项目在 GitHub 上一夜爆红，短时间内斩获大量 Star。它展示了一个令人震惊的能力：给定一个目标（比如"帮我研究一下量子计算的现状并写一份报告"），AutoGPT 会自动分解任务、搜索网络、阅读结果、迭代优化，最终输出成品。这是公众第一次直观感受到"AI 自主完成任务"的震撼。</p>
 
 <p>同期，<strong>BabyAGI</strong> 和 <strong>AgentGPT</strong> 也相继出现。这些早期项目虽然概念超前，但工程上非常粗糙——Token 消耗惊人、经常陷入死循环、缺乏错误恢复机制。我清楚记得 2023 年中尝试部署 AutoGPT 时的情景：启动脚本后它兴高采烈地去查资料，结果十分钟后因为 API 超时而卡住，然后开始疯狂重试，最后账单上多了 20 美元——什么结果都没出来。</p>
 
@@ -335,7 +335,7 @@ code{overflow-wrap:anywhere}
 <p>2026 年，<strong>MCP（Model Context Protocol）</strong> 和 <strong>A2A（Agent-to-Agent）</strong> 协议成为行业焦点。MCP 由 Anthropic 提出，为 LLM 提供标准化的工具接入协议——类似于"AI 世界的 USB 接口"。A2A 协议则由 Google 主导，定义了 Agent 之间的通信标准。这两个协议的落地意味着 Agent 生态从"各自为战"走向"互联互通"，其重要性不亚于 HTTP 对 Web 的意义。</p>
 
 <div class="tip">
-    <strong>趋势观察：</strong> 2026 年上半年，主流云厂商（AWS、Azure、GCP）均已内置 MCP Server 支持。部署一个 Agent 的复杂度已经从 2024 年的"需要专职团队"降低到"一个配置文件"。
+    <strong>趋势观察：</strong> 进入 2026 年，主流云平台与模型厂商正在陆续提供对 MCP（Model Context Protocol）的原生支持，标准化的工具接入正在快速普及（各家进度不一，具体范围以官方公告为准）。对开发者而言，接入一个外部工具的成本正从“写适配器”降为“改一个配置文件”。
 </div>
 
 <h2>1.3 Agent 核心能力矩阵</h2>
