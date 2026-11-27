@@ -477,7 +477,7 @@ vectorstore = Qdrant.from_documents(
     <ul>
         <li><strong>中文内容为主：</strong> BGE-M3 或 BCE（Bilingual Cross-Encoder）是目前中文场景效果最好的开源 Embedding 模型。</li>
         <li><strong>多语言混合：</strong> OpenAI text-embedding-3-large 仍然是综合质量最强的商业方案。</li>
-        <li><strong>维度取舍：</strong> 最新的研究表明，将 Embedding 维度从 3076 压缩到 256-512 维度，检索精度仅下降 2-5%，但存储和检索速度提升 10 倍以上。建议在质量和性能之间取平衡。</li>
+        <li><strong>维度取舍：</strong> 许多 Embedding 模型支持“套娃式”降维（如把 1536 / 3072 维的向量截断到 256-512 维仍可用）：向量越短，存储与检索越快，精度损失通常可接受。但“截断到多少维仍保多少精度”取决于模型与语料，<strong>必须在你自己的评测集上验证</strong>，不要照搬某个固定百分比。</li>
         <li><strong>混合路线：</strong> 很多生产系统会同时索引两个 Embedding 模型——一个通用的和一个领域专用的——检索时合并结果。</li>
     </ul>
 </div>
