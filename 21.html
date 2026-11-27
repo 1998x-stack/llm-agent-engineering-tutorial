@@ -260,7 +260,7 @@ researcher = Agent(
 <p>这里出现了三个关键属性：<code>role</code>（角色名称）、<code>goal</code>（目标）、<code>backstory</code>（背景故事）。这三个属性共同构成了 Agent 的"人设"，LLM 会根据这个人设来调整自己的行为方式——包括语言风格、思考角度、决策偏好等。</p>
 
 <div class="tip">
-    <strong>人设的重要性：</strong> 在内部测试中，我们发现"人设写得越具体，Agent 的输出质量越高"。一个仅仅写了"你是一个研究员"的 Agent，和一个写了完整 backstory 的 Agent，在同一个任务上的表现差距可以达到 40% 以上。backstory 本质上是一种隐式的 prompt 工程——它比直接写"你要认真"有效得多。
+    <strong>人设的重要性：</strong> 在内部测试中，我们发现"人设写得越具体，Agent 的输出质量越高"。一个仅仅写了"你是一个研究员"的 Agent，和一个写了完整 backstory 的 Agent，在同一个任务上的表现往往有明显差距（幅度随任务与模型而异，本教程不给定值）。backstory 本质上是一种隐式的 prompt 工程——它比直接写"你要认真"有效得多。
 </div>
 
 <h2>21.2 Agent / Task / Crew 三要素</h2>

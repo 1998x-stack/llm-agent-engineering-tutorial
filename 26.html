@@ -443,7 +443,7 @@ def classify_node(state: dict) -> dict:
     return state</code></pre>
 
 <div class="tip">
-    <strong>实战经验：</strong> 工单分类的准确率直接影响后续所有流程的质量。在我们的测试中，直接使用 LLM 的 Function Calling 做分类，在 7 个类别上的准确率可达 96% 以上。关键技巧是：category 的枚举值要具体且互斥（"售后_退货"比"售后问题"更精确），同时给 LLM 一个明确的中文描述。
+    <strong>实战经验：</strong> 工单分类的准确率直接影响后续所有流程的质量。实践中，用 LLM 的 Function Calling 做分类通常能获得很好的效果——关键是 category 的枚举值要具体且互斥（“售后_退货”比“售后问题”更精确），同时给 LLM 一个明确的中文描述。<em>（具体准确率取决于类别体系与样本分布，请在自有标注集上测，本教程不给固定百分比。）</em>
 </div>
 
 <h2>26.4 多轮对话状态管理</h2>
